@@ -33,7 +33,6 @@ public final class LoadBitmapTask implements Runnable {
     private Resources mResources;
     private Thread mThread;
     private LinkedList<Bitmap> mQueue;
-    int[][] mPortraitBGs;
 
     //TODO: ha másik singleton konvenciót használunk akkor törölni
     public static LoadBitmapTask get(Context context) {
@@ -62,7 +61,6 @@ public final class LoadBitmapTask implements Runnable {
         Bitmap bitmap = null;
         synchronized (this) {
             if (mQueue.size() > 0) {
-                //TODO: nem pop
                 bitmap = mQueue.pop();
             }
 
@@ -70,7 +68,7 @@ public final class LoadBitmapTask implements Runnable {
         }
 
         if (bitmap == null) {
-            //TODO: cserélni, ha van jobb loggint osztály
+            //TODO: cserélni, ha van jobb logging osztály
             Log.d("LoadBitmapTask", "Load bit bitmap Instantly!");
             bitmap = getNextBitmap();
         }
@@ -81,6 +79,7 @@ public final class LoadBitmapTask implements Runnable {
     private Bitmap getNextBitmap() {
         //TODO: (MOCK) implementálni
         Bitmap bitmap = BitmapFactory.decodeResource(mResources, R.drawable.sample);
+
         if (mIsLandScape) {
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
