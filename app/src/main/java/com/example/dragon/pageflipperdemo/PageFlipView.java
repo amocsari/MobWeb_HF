@@ -24,6 +24,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 //TODO: kiszervezni a renderer-t külön osztályba
 public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Renderer {
+    public static final String KEY_PREF_DURATION = "duration";
+    public static final String KEY_PREF_MESH_PIXELS = "mesh_pixels";
+    public static final String KEY_PREF_PAGE_MODE = "page_mode";
+
 
     private Integer mPageNumber;
     private Integer mAnimationDuration;
@@ -56,9 +60,9 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
         mHandler = createHandler();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        mAnimationDuration = sharedPreferences.getInt(Keys.KEY_PREF_DURATION, Constants.DEFAULT_DURATION);
-        int pixelsOfMesh = sharedPreferences.getInt(Keys.KEY_PREF_MESH_PIXELS, Constants.DEFAULT_MESH_PIXELS);
-        boolean isAuto = sharedPreferences.getBoolean(Keys.KEY_PREF_PAGE_MODE, Constants.DEFAULT_PAGE_MODE);
+        mAnimationDuration = sharedPreferences.getInt(KEY_PREF_DURATION, Constants.DEFAULT_DURATION);
+        int pixelsOfMesh = sharedPreferences.getInt(KEY_PREF_MESH_PIXELS, Constants.DEFAULT_MESH_PIXELS);
+        boolean isAuto = sharedPreferences.getBoolean(KEY_PREF_PAGE_MODE, Constants.DEFAULT_PAGE_MODE);
 
         mPageFlip = new PageFlip(context);
 
