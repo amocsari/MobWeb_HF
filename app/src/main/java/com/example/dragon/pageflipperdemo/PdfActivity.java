@@ -15,7 +15,7 @@ import com.example.dragon.pageflipperdemo.PdfHandling.PdfHandler;
 
 import java.io.IOException;
 
-class PdfActivity extends Activity{
+public class PdfActivity extends Activity{
 
     PdfHandler mPdfHandler;
     Button bJump;
@@ -29,8 +29,8 @@ class PdfActivity extends Activity{
 
         bJump = findViewById(R.id.b_jump);
         ivContent  = findViewById(R.id.iv_content);
-        mPdfHandler = PdfHandler.get(getBaseContext());
         etPageNum = findViewById(R.id.et_page_num);
+        mPdfHandler = PdfHandler.get(getBaseContext(), ivContent.getWidth());
 
         try {
             mPdfHandler.openPdf(R.raw.sample);
@@ -42,6 +42,8 @@ class PdfActivity extends Activity{
         bJump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO: ne get-eljük minden alkalommal amikor megnyomjuk a gombot
+                mPdfHandler = PdfHandler.get(getBaseContext(), ivContent.getWidth());
                 //TODO: impl
                 Integer pageNo = Integer.parseInt(etPageNum.getText().toString());
                 try {
@@ -65,5 +67,10 @@ class PdfActivity extends Activity{
                 ivContent.setImageBitmap(bitmap);
             }
         });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus){
+        super.onWindowFocusChanged(hasFocus);
     }
 }
