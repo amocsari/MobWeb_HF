@@ -8,7 +8,7 @@ import android.os.Handler;
 import com.eschao.android.widget.pageflip.OnPageFlipListener;
 import com.eschao.android.widget.pageflip.PageFlip;
 import com.example.dragon.pageflipperdemo.Common.Keys;
-
+import com.example.dragon.pageflipperdemo.PdfHandling.PdfHandler;
 
 
 //TODO: listener-t kiszervezni külön osztályba

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -30,8 +31,12 @@ public class PdfHandler {
     private Context mContext;
     private PDFFile mPDFFile;
     private PDFPage mPDFPage;
-
     private Integer mViewSize;
+
+    public static PdfHandler get(Context context){
+        //TODO: helyettesíteni tejes képernyő szélességével
+        return get(context, 1);
+    }
 
     public static PdfHandler get(Context context, int viewSize) {
         if (__object == null) {
@@ -44,12 +49,21 @@ public class PdfHandler {
     }
 
     private PdfHandler(Context context) {
+        //TODO: context csak a mock-hoz kell
         mContext = context;
 
         PDFImage.sShowImages = true;
 
         //TODO: battery saving stuff
         PDFPaint.s_doAntiAlias = true;
+    }
+
+    public Integer getViewSize() {
+        return mViewSize;
+    }
+
+    public void setViewSize(Integer mViewSize) {
+        this.mViewSize = mViewSize;
     }
 
     public void openPdf(int resourceId) throws IOException {
@@ -69,73 +83,103 @@ public class PdfHandler {
     //TODO: suppress-t megoldani
     @SuppressLint("StaticFieldLeak")
     public void activatePage(final int pageNo) throws PdfNotOpenException, PdfPageNotFoundException {
-        try {
-
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-
-                        if (mPDFFile == null) {
-                            //TODO: logging
-                            Log.e(TAG, "Pdf not open when activatePage was called");
-                            throw new PdfNotOpenException();
-                        }
-
-                        try {
-                            mPDFPage = mPDFFile.getPage(pageNo, true);
-                        } catch (Exception e) {
-                            //TODO: logging
-                            Log.e(TAG, "Cannot get page from PDF");
-                            throw new PdfPageNotFoundException(pageNo, e);
-                        }
-                        if (mPDFPage == null) {
-                            //TODO: logging
-                            Log.e(TAG, "Page not open after getPage");
-                            throw new PdfPageNotFoundException(pageNo);
-                        }
-                    } catch (Exception ignored) {
-
-                    }
-                    return null;
-                }
-            }.execute();
-
-
-        } catch (Exception e) {
+        if (mPDFFile == null) {
+            //TODO: logging
+            Log.e(TAG, "Pdf not open when activatePage was called");
+            throw new PdfNotOpenException();
         }
+
+        try {
+            mPDFPage = mPDFFile.getPage(pageNo, true);
+        } catch (Exception e) {
+            //TODO: logging
+            Log.e(TAG, "Cannot get page from PDF");
+            throw new PdfPageNotFoundException(pageNo, e);
+        }
+        if (mPDFPage == null) {
+            //TODO: logging
+            Log.e(TAG, "Page not open after getPage");
+            throw new PdfPageNotFoundException(pageNo);
+        }
+
+//        try {
+//
+//            new AsyncTask<Void, Void, Void>() {
+//
+//                @Override
+//                protected Void doInBackground(Void... voids) {
+//                    try {
+//
+//                        if (mPDFFile == null) {
+//                            //TODO: logging
+//                            Log.e(TAG, "Pdf not open when activatePage was called");
+//                            throw new PdfNotOpenException();
+//                        }
+//
+//                        try {
+//                            mPDFPage = mPDFFile.getPage(pageNo, true);
+//                        } catch (Exception e) {
+//                            //TODO: logging
+//                            Log.e(TAG, "Cannot get page from PDF");
+//                            throw new PdfPageNotFoundException(pageNo, e);
+//                        }
+//                        if (mPDFPage == null) {
+//                            //TODO: logging
+//                            Log.e(TAG, "Page not open after getPage");
+//                            throw new PdfPageNotFoundException(pageNo);
+//                        }
+//                    } catch (Exception ignored) {
+//
+//                    }
+//                    return null;
+//                }
+//            }.execute();
+//
+//
+//        } catch (Exception e) {
+//        }
     }
 
     @SuppressLint("StaticFieldLeak")
     public Bitmap getPageAsBitmap() throws PdfNotOpenException, PdfPageNotFoundException {
 
-        try {
-            return new AsyncTask<Void, Void, Bitmap>(){
-
-                @Override
-                protected Bitmap doInBackground(Void... voids) {
-
-                    if (mPDFFile == null) {
-                        return null;
-                        //TODO: exception handling
-//                        throw new PdfNotOpenException();
-                    }
-                    if (mPDFPage == null) {
-                        return null;
-                        //TODO: exception handling
-//                        throw new PdfPageNotFoundException();
-                    }
-
-                    final float scale = mViewSize / mPDFPage.getWidth() * 0.95f;
-
-                    Bitmap bitmap = mPDFPage.getImage((int) (mPDFPage.getWidth() * scale), (int) (mPDFPage.getHeight() * scale), null, true, true);
-                    return bitmap;
-                }
-            }.execute().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        if (mPDFFile == null) {
+            throw new PdfNotOpenException();
         }
-        return null;
+        if (mPDFPage == null) {
+            throw new PdfPageNotFoundException();
+        }
+
+        final float scale = mViewSize / mPDFPage.getWidth() * 0.95f;
+        Bitmap bitmap = mPDFPage.getImage((int) (mPDFPage.getWidth() * scale), (int) (mPDFPage.getHeight() * scale), null, true, true);
+        return bitmap;
+
+//        try {
+//            return new AsyncTask<Void, Void, Bitmap>(){
+//
+//                @Override
+//                protected Bitmap doInBackground(Void... voids) {
+//
+//                    if (mPDFFile == null) {
+//                        return null;
+//                        //TODO: exception handling
+////                        throw new PdfNotOpenException();
+//                    }
+//                    if (mPDFPage == null) {
+//                        return null;
+//                        //TODO: exception handling
+////                        throw new PdfPageNotFoundException();
+//                    }
+//
+//                    final float scale = mViewSize / mPDFPage.getWidth() * 0.95f;
+//
+//                    Bitmap bitmap = mPDFPage.getImage((int) (mPDFPage.getWidth() * scale), (int) (mPDFPage.getHeight() * scale), null, true, true);
+//                    return bitmap;
+//                }
+//            }.execute().get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 }

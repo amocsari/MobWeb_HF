@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
+import com.example.dragon.pageflipperdemo.PdfHandling.PdfHandler;
+
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -26,6 +29,7 @@ public final class LoadBitmapTask implements Runnable {
     //TODO: nem konstans
     final static int BG_COUNT = 10;
 
+    private int mWidth;
     private int mBGSize;
     private int mQueueMaxSize;
     private boolean mIsLandScape;
@@ -33,6 +37,7 @@ public final class LoadBitmapTask implements Runnable {
     private Resources mResources;
     private Thread mThread;
     private LinkedList<Bitmap> mQueue;
+    private Context mContext;
 
     //TODO: ha másik singleton konvenciót használunk akkor törölni
     public static LoadBitmapTask get(Context context) {
@@ -44,6 +49,8 @@ public final class LoadBitmapTask implements Runnable {
     }
 
     private LoadBitmapTask(Context context) {
+        //TODO: context csak a mock-hoz kell
+        mContext = context;
         mResources = context.getResources();
         mBGSize = BG_SIZE_SMALL;
         mStop = false;
@@ -125,6 +132,7 @@ public final class LoadBitmapTask implements Runnable {
     }
 
     public void set(int w, int h, int maxCached) {
+        mWidth = w;
         int newIndex = BG_SIZE_LARGE;
 
         //TODO: kiszervezni
