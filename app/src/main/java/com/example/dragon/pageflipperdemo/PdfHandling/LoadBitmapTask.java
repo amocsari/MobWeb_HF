@@ -1,4 +1,4 @@
-package com.example.dragon.pageflipperdemo;
+package com.example.dragon.pageflipperdemo.PdfHandling;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,12 +7,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.util.Log;
 
-import com.example.dragon.pageflipperdemo.PdfHandling.PdfHandler;
+import com.example.dragon.pageflipperdemo.R;
 
-import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Random;
 
+/**
+ * bitmap folyamatos beöltéséért felelős osztály
+ */
 public final class LoadBitmapTask implements Runnable {
 
     //TODO: külön memory barát verzió, ahol nem cache-eli be a teljes könyvet, hanem mindig kiolvassa az aktuálisat (lassabb lehet)
@@ -39,7 +40,11 @@ public final class LoadBitmapTask implements Runnable {
     private LinkedList<Bitmap> mQueue;
     private Context mContext;
 
-    //TODO: ha másik singleton konvenciót használunk akkor törölni
+    /**
+     * singleton scope
+     * @param context
+     * @return
+     */
     public static LoadBitmapTask get(Context context) {
         if (__object == null) {
             __object = new LoadBitmapTask(context);
@@ -64,6 +69,10 @@ public final class LoadBitmapTask implements Runnable {
         //TODO: init drawables
     }
 
+    /**
+     * visszaadja a következő bitmapt-t
+     * @return
+     */
     public Bitmap getBitmap() {
         Bitmap bitmap = null;
         synchronized (this) {
@@ -75,15 +84,20 @@ public final class LoadBitmapTask implements Runnable {
         }
 
         if (bitmap == null) {
-            //TODO: cserélni, ha van jobb logging osztály
-            Log.d("LoadBitmapTask", "Load bit bitmap Instantly!");
             bitmap = getNextBitmap();
         }
 
         return bitmap;
     }
 
+    /**
+     * betölti a következő bitmap-t
+     * @return
+     */
     private Bitmap getNextBitmap() {
+
+
+
         //TODO: (MOCK) implementálni
         Bitmap bitmap = BitmapFactory.decodeResource(mResources, R.drawable.sample);
 
@@ -102,6 +116,9 @@ public final class LoadBitmapTask implements Runnable {
         return mThread != null && mThread.isAlive();
     }
 
+    /**
+     * elindítja a töltő szálat
+     */
     public synchronized void start() {
         if (mThread == null || !mThread.isAlive()) {
             mStop = false;
@@ -110,6 +127,9 @@ public final class LoadBitmapTask implements Runnable {
         }
     }
 
+    /**
+     * leállítja a töltőszálat
+     */
     public void stop() {
         synchronized (this) {
             mStop = true;
@@ -131,11 +151,16 @@ public final class LoadBitmapTask implements Runnable {
         }
     }
 
+    /**
+     * képernyőméret alapján méret és orientáció megválasztása
+     * @param w
+     * @param h
+     * @param maxCached
+     */
     public void set(int w, int h, int maxCached) {
         mWidth = w;
         int newIndex = BG_SIZE_LARGE;
 
-        //TODO: kiszervezni
         if ((w <= 480 && h <= 8524) ||
                 (w <= 854 && h <= 480)) {
             newIndex = BG_SIZE_SMALL;
@@ -144,7 +169,6 @@ public final class LoadBitmapTask implements Runnable {
             newIndex = BG_SIZE_MEDIUM;
         }
 
-        //TODO: lekérni telefon adatokból
         mIsLandScape = w > h;
 
         if (maxCached != mQueueMaxSize) {
@@ -160,6 +184,9 @@ public final class LoadBitmapTask implements Runnable {
         }
     }
 
+    /**
+     * sor törélse
+     */
     private void cleanQueue() {
         for (int i = 0; i < mQueue.size(); i++) {
             mQueue.get(i).recycle();
@@ -168,6 +195,9 @@ public final class LoadBitmapTask implements Runnable {
         mQueue.clear();
     }
 
+    /**
+     * bitmap betöltéséért feleős futás
+     */
     public void run() {
         //TODO: break helyett while(!mStop) és cleanQueue a cikluson kívül
         while (true) {

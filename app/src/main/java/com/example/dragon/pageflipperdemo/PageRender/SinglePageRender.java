@@ -10,16 +10,21 @@ import android.os.Message;
 import com.eschao.android.widget.pageflip.Page;
 import com.eschao.android.widget.pageflip.PageFlip;
 import com.eschao.android.widget.pageflip.PageFlipState;
-import com.example.dragon.pageflipperdemo.Common.Keys;
-import com.example.dragon.pageflipperdemo.LoadBitmapTask;
+import com.example.dragon.pageflipperdemo.PdfHandling.LoadBitmapTask;
 
-
+/**
+ * egy oldalas lapozást megjelenítő renderer
+ */
 public class SinglePageRender extends PageRender {
 
     public SinglePageRender(Context context, PageFlip pageFlip, Handler handler, Integer pageNumber) {
         super(context, pageFlip, handler, pageNumber);
     }
 
+    /**
+     * oldalra  rajzoláskor hívódó eseménykezelő
+     * kirajzolja az oldalra a választott képet
+     */
     @Override
     public void onDrawFrame() {
         mPageFlip.deleteUnusedTextures();
@@ -53,6 +58,12 @@ public class SinglePageRender extends PageRender {
         mHandler.sendMessage(message);
     }
 
+    /**
+     * felület megváltozásakor hívódó eseménykezelő
+     * betölti a következő képet és beállítja a méreteit
+     * @param width
+     * @param height
+     */
     @Override
     public void onSurfaceChanged(Integer width, Integer height) {
         if (mBackGround != null) {
@@ -72,6 +83,12 @@ public class SinglePageRender extends PageRender {
         LoadBitmapTask.get(mContext).set(width, height, 1);
     }
 
+    /**
+     * rajzolás végeztével hívódó eseménykezelő
+     * az animálásért felelős
+     * @param what
+     * @return
+     */
     @Override
     public boolean onEndedDrawing(Integer what) {
         if (what == DRAW_ANIMATING_FRAME) {
@@ -94,6 +111,10 @@ public class SinglePageRender extends PageRender {
         return false;
     }
 
+    /**
+     * oldal kirajzolásáért felelős függvény
+     * @param pageNumber
+     */
     private void drawPage(Integer pageNumber) {
         final int width = mCanvas.getWidth();
         final int height = mCanvas.getHeight();
@@ -107,11 +128,19 @@ public class SinglePageRender extends PageRender {
         background = null;
     }
 
+    /**
+     * oldalszám alapján eldönti, hogy a lapozás lehetséges-e
+     * @return
+     */
     @Override
     public boolean canFlipForward() {
         return mPageNumber < mMaxPageNumber;
     }
 
+    /**
+     * oldalszám alapján eldönti, hogy a lapozás lehetséges-e
+     * @return
+     */
     @Override
     public boolean canFlipBackward() {
         if (mPageNumber > 1) {

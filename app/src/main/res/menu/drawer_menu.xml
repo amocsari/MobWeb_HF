@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/miImport"
+            android:title="Import"
+            android:visible="false"/>
+        <item
+            android:id="@+id/miLogin"
+            android:title="Login"/>
+        <item
+            android:id="@+id/miLogout"
+            android:title="Logout"
+            android:visible="false"/>
+    </group>
+</menu>

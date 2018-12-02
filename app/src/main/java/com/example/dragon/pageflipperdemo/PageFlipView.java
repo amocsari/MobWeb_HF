@@ -13,7 +13,7 @@ import com.eschao.android.widget.pageflip.PageFlip;
 import com.eschao.android.widget.pageflip.PageFlipException;
 import com.example.dragon.pageflipperdemo.Common.Constants;
 import com.example.dragon.pageflipperdemo.Common.Keys;
-import com.example.dragon.pageflipperdemo.PageRender.DoublePageRender;
+//import com.example.dragon.pageflipperdemo.PageRender.DoublePageRender;
 import com.example.dragon.pageflipperdemo.PageRender.PageRender;
 import com.example.dragon.pageflipperdemo.PageRender.SinglePageRender;
 
@@ -22,6 +22,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+/**
+ * lapozást megjelenítő view
+ */
 //TODO: kiszervezni a renderer-t külön osztályba
 public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Renderer {
 
@@ -52,6 +55,10 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
         initializeContext(context);
     }
 
+    /**
+     * configurálás lvégzése beállítsok alapján
+     * @param context
+     */
     private void initializeContext(Context context) {
         mHandler = createHandler();
 
@@ -98,12 +105,21 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
 
     //TODO: ha támogatott a "csak single page view"-ból "double page view"-ba váltás akkor implementálni az enableAutoPage metódust
 
+    /**
+     * eseményekezeléő hívja
+     * @param x
+     * @param y
+     */
     public void onFingerDown(float x, float y) {
         if (!mPageFlip.isAnimating() && mPageFlip.getFirstPage() != null) {
             mPageFlip.onFingerDown(x, y);
         }
     }
-
+    /**
+     * eseményekezeléő hívja
+     * @param x
+     * @param y
+     */
     public void onFingerMove(float x, float y) {
         //TODO: megnézni, hogy kell-e az if ág
         if (mPageFlip.isAnimating()) {
@@ -121,7 +137,11 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
         }
 
     }
-
+    /**
+     * eseményekezeléő hívja
+     * @param x
+     * @param y
+     */
     public void onFingerUp(float x, float y) {
         if (!mPageFlip.isAnimating()) {
             mPageFlip.onFingerUp(x, y, mAnimationDuration);
@@ -134,7 +154,11 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
             }
         }
     }
-
+    /**
+     * eseményekezeléő hívja
+     * @param x
+     * @param y
+     */
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         try {
@@ -144,7 +168,11 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
             e.printStackTrace();
         }
     }
-
+    /**
+     * eseményekezeléő hívja
+     * @param x
+     * @param y
+     */
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         try {
@@ -153,10 +181,10 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
             int pageNumber = mPageRender.getPageNumber();
             //TODO: width>height helyett megnézni, hogy lehet-e azt ellenőrizni, hogy landscape-e
             if (mPageFlip.getSecondPage() != null && width > height) {
-                if (!(mPageRender instanceof DoublePageRender)) {
-                    mPageRender.release();
-                    mPageRender = new DoublePageRender(getContext(), mPageFlip, mHandler, pageNumber);
-                }
+//                if (!(mPageRender instanceof DoublePageRender)) {
+//                    mPageRender.release();
+//                    mPageRender = new DoublePageRender(getContext(), mPageFlip, mHandler, pageNumber);
+//                }
             } else if (!(mPageRender instanceof SinglePageRender)) {
                 mPageRender.release();
                 mPageRender = new SinglePageRender(getContext(), mPageFlip, mHandler, pageNumber);
@@ -168,7 +196,11 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
             e.printStackTrace();
         }
     }
-
+    /**
+     * kirajzol
+     * @param x
+     * @param y
+     */
     @Override
     public void onDrawFrame(GL10 gl) {
         try {
@@ -182,6 +214,10 @@ public class PageFlipView extends GLSurfaceView implements GLSurfaceView.Rendere
     }
 
 
+    /**
+     * üzen a rajzolás befejezéséről
+     * @return
+     */
     //TODO: megoldani a suppress-elt warningot
     // https://stackoverflow.com/questions/11407943/this-handler-class-should-be-static-or-leaks-might-occur-incominghandler
     @SuppressLint("HandlerLeak")

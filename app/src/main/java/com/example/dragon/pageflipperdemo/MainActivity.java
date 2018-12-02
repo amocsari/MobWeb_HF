@@ -1,18 +1,18 @@
 package com.example.dragon.pageflipperdemo;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 
-//TODO: create options menu
-//TODO: kiszervezni a GestureDetector-t egy külön osztályba
+import com.example.dragon.pageflipperdemo.PdfHandling.LoadBitmapTask;
+
+/**
+ * lapozást megjelenítő activity
+ * kezeli a különböző eseményeket
+ */
 public class MainActivity extends Activity implements OnGestureListener {
 
     PageFlipView mPageFlipView;

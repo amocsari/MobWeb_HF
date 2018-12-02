@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "956204674749",
+    "firebase_url": "https://pageflipperdemo.firebaseio.com",
+    "project_id": "pageflipperdemo",
+    "storage_bucket": "pageflipperdemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956204674749:android:73536a58bc0e7ddc",
+        "android_client_info": {
+          "package_name": "com.example.dragon.pageflipperdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956204674749-8h555hp7d3v5phbap7gpblu8lc2n6ioa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dragon.pageflipperdemo",
+            "certificate_hash": "7fd1e4cec09ea4cc2ce8d43cfa9e8b9d603832f3"
+          }
+        },
+        {
+          "client_id": "956204674749-8anh7olfkjcgapjtnfm75ll1jc75its9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9Z3zh1i5qCkJi4b0GgI6lf9In9_shFO8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956204674749-8anh7olfkjcgapjtnfm75ll1jc75its9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

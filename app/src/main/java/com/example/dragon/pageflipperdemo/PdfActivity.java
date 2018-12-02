@@ -15,6 +15,9 @@ import com.example.dragon.pageflipperdemo.PdfHandling.PdfHandler;
 
 import java.io.IOException;
 
+/**
+ * pdf megjelenítéséért felelős activity
+ */
 public class PdfActivity extends Activity{
 
     PdfHandler mPdfHandler;

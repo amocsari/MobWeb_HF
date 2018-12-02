@@ -10,7 +10,9 @@ import com.eschao.android.widget.pageflip.PageFlip;
 import com.example.dragon.pageflipperdemo.Common.Keys;
 import com.example.dragon.pageflipperdemo.PdfHandling.PdfHandler;
 
-
+/**
+ * Egy oldal megjelenítéséhez szükséges műveleteket definiáló absztrakt osztály
+ */
 //TODO: listener-t kiszervezni külön osztályba
 //TODO: render-t kivezetni interfészbe (onDraw minden implementációnál van, mégsincs a superclass-ban)
 public abstract class PageRender implements OnPageFlipListener {
@@ -53,6 +55,9 @@ public abstract class PageRender implements OnPageFlipListener {
         return mPageNumber;
     }
 
+    /**
+     * garbage collection-re elengedi az aktuális bitmap-t
+     */
     public void release() {
         if (mBitmap != null) {
             mBitmap.recycle();
@@ -64,11 +69,23 @@ public abstract class PageRender implements OnPageFlipListener {
         mBackGround = null;
     }
 
+    /**
+     * ujjmozgatás eseménykezelő
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean onFingerMove(float x, float y) {
         mDrawCommand = DRAW_MOVING_FRAME;
         return true;
     }
 
+    /**
+     * ujjmozgatás eseménykezelő
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean onFingerUp(float x, float y) {
         if (mPageFlip.isAnimating()) {
             mDrawCommand = DRAW_ANIMATING_FRAME;
@@ -77,9 +94,22 @@ public abstract class PageRender implements OnPageFlipListener {
         return false;
     }
 
+    /**
+     * canvas-ra rajzoláskori eseménykezelő
+     */
     public abstract void onDrawFrame();
 
+    /**
+     * felületm egváltozásakori eseménykezelő
+     * @param width
+     * @param height
+     */
     public abstract void onSurfaceChanged(Integer width, Integer height);
 
+    /**
+     * kirajzolás végekori eseménykezelő
+     * @param what
+     * @return
+     */
     public abstract boolean onEndedDrawing(Integer what);
 }

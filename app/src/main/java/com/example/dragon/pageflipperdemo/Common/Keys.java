@@ -1,5 +1,8 @@
 package com.example.dragon.pageflipperdemo.Common;
 
+/**
+ * kulcsok, amiket a glview használ
+ */
 public final class Keys {
     public static final String KEY_PREF_DURATION = "duration";
     public static final String KEY_PREF_MESH_PIXELS = "mesh_pixels";

@@ -22,8 +22,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * pdf-k megnyitásáért felelős osztály
+ */
 public class PdfHandler {
 
+    /**
+     * singleton scope
+     */
     private static PdfHandler __object;
 
     private final String TAG = "PfdHandler";
@@ -66,6 +72,11 @@ public class PdfHandler {
         this.mViewSize = mViewSize;
     }
 
+    /**
+     * megnyit egy pdf-t (egyelőre resource alapján)
+     * @param resourceId
+     * @throws IOException
+     */
     public void openPdf(int resourceId) throws IOException {
         InputStream inputStream = mContext.getResources().openRawResource(resourceId);
         byte[] bytes = new byte[inputStream.available()];
@@ -80,7 +91,12 @@ public class PdfHandler {
         mPDFFile = new PDFFile(byteBuffer);
     }
 
-    //TODO: suppress-t megoldani
+    /**
+     * a kapott oldalra lapoz
+     * @param pageNo
+     * @throws PdfNotOpenException
+     * @throws PdfPageNotFoundException
+     */
     @SuppressLint("StaticFieldLeak")
     public void activatePage(final int pageNo) throws PdfNotOpenException, PdfPageNotFoundException {
         if (mPDFFile == null) {
@@ -140,6 +156,12 @@ public class PdfHandler {
 //        }
     }
 
+    /**
+     * visszaadja az az aktuális oldalt bitmap formátumban
+     * @return
+     * @throws PdfNotOpenException
+     * @throws PdfPageNotFoundException
+     */
     @SuppressLint("StaticFieldLeak")
     public Bitmap getPageAsBitmap() throws PdfNotOpenException, PdfPageNotFoundException {
 

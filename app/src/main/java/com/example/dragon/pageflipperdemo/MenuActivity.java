@@ -11,6 +11,7 @@ public class MenuActivity extends Activity {
 
     Button bPageFlipDemo;
     Button bPdfOpenDemo;
+    Button bFileListDemo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class MenuActivity extends Activity {
 
         bPageFlipDemo = findViewById(R.id.bPageFlipDemo);
         bPdfOpenDemo = findViewById(R.id.bPdfOpenDemo);
+        bFileListDemo = findViewById(R.id.bPdfList);
 
         bPageFlipDemo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +34,14 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), PdfActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bFileListDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), PdfListActivity.class);
                 startActivity(intent);
             }
         });

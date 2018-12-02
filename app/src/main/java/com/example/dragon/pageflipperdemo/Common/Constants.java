@@ -1,5 +1,8 @@
 package com.example.dragon.pageflipperdemo.Common;
 
+/**
+ * default értékek, amiket a glview használ
+ */
 public final class Constants {
     public static final Integer DEFAULT_DURATION = 1000;
     public static final Integer DEFAULT_MESH_PIXELS = 10;

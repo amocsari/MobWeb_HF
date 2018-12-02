@@ -1,5 +1,8 @@
 package com.example.dragon.pageflipperdemo.Exception;
 
+/**
+ * pdfoldalra sikertelen lapozáskor dobódó kivétel
+ */
 public class PdfPageNotFoundException extends Exception {
     private Integer mPageNumber;
     private Exception mInnerException;
