@@ -31,6 +31,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import net.sf.andpdf.pdfviewer.PdfViewerActivity;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ import java.util.List;
  */
 public class PdfListActivity extends AppCompatActivity {
     private static final int IMPORT_REQUEST_CODE = 42;
+    private static final int OPEN_REQUEST_CODE = 54;
 
     private ArrayList<PdfDataModel> pdfDataModelList;
 
@@ -87,7 +90,7 @@ public class PdfListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("application/pdf");
-                startActivityForResult(intent, IMPORT_REQUEST_CODE);
+                startActivityForResult(intent, OPEN_REQUEST_CODE);
             }
         });
 
@@ -155,6 +158,14 @@ public class PdfListActivity extends AppCompatActivity {
         if (requestCode == IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 addPdfToList(resultData.getData());
+            }
+        }
+
+        if(requestCode == OPEN_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            if(resultData != null && resultData.getData() != null){
+                Intent intent = new Intent(getBaseContext(), PdfActivity.class);
+                intent.putExtra("uri", resultData.getData().toString());
+                startActivity(intent);
             }
         }
 

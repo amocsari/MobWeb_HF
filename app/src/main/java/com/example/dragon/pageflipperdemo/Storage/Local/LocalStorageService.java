@@ -7,11 +7,9 @@ import com.example.dragon.pageflipperdemo.Database.Local.LocalDatabaseService;
 import com.example.dragon.pageflipperdemo.Database.Local.PdfDataEntity;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * lokális adattárolásért felelős osztály
@@ -34,25 +32,29 @@ public class LocalStorageService {
 
     /**
      * elmenti a uri-ban kapott file-t internal storage-ba, hogy majd meg lehessen onnan nyitni
+     *
      * @param uri
      * @param entity
      * @throws IOException
      */
     public void saveToLocalStorage(Uri uri, final PdfDataEntity entity) throws IOException {
-        File dst = new File(applicationContext.getFilesDir() + "/" + entity.id+".pdf");
-        dst.createNewFile();
-        File src = new File(uri.toString());
-        InputStream is = applicationContext.getContentResolver().openInputStream(uri);
+        InputStream inputStream = applicationContext.getContentResolver().openInputStream(uri);
 
-        OutputStream os=new FileOutputStream(dst);
-        byte[] buff=new byte[1024];
-        int len;
-        while((len=is.read(buff))>0){
-            os.write(buff,0,len);
+        byte[] bytes = new byte[inputStream.available()];
+
+        int offset = 0;
+        int numread = 0;
+        while (offset < bytes.length && (numread = inputStream.read(bytes, offset, bytes.length - offset)) >= 0) {
+            offset += numread;
         }
-        is.close();
-        os.close();
 
+        String filepath = applicationContext.getFilesDir() + "/" + entity.id+".pdf";
+        File dst = new File(filepath);
+        dst.createNewFile();
+
+        FileOutputStream stream = new FileOutputStream(filepath);
+        stream.write(bytes);
+        stream.close();
         LocalDatabaseService.getInstance(applicationContext).addPdfData(entity);
     }
 
@@ -61,11 +63,13 @@ public class LocalStorageService {
      * @param id
      * @return
      */
-//    public File getPdfById(int id) {
-//        File directory = new File(applicationContext.getFilesDir().toURI());
-//        File[] files = directory.listFiles();
-//
-//        String filename = id + ".pdf";
-//        return new File(applicationContext.getFilesDir() + "/" + filename);
-//    }
+    public Uri getPdfById(int id) {
+        File file = new File(applicationContext.getFilesDir() + "/" + id +".pdf");
+        if(file.exists()){
+            Uri uri = Uri.fromFile(file);
+            return  uri;
+        }
+
+        return null;
+    }
 }

@@ -2,11 +2,8 @@ package com.example.dragon.pageflipperdemo.PdfHandling;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Base64;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.dragon.pageflipperdemo.Exception.PdfNotOpenException;
@@ -20,7 +17,6 @@ import net.sf.andpdf.nio.ByteBuffer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.ExecutionException;
 
 /**
  * pdf-k megnyitásáért felelős osztály
@@ -74,11 +70,12 @@ public class PdfHandler {
 
     /**
      * megnyit egy pdf-t (egyelőre resource alapján)
-     * @param resourceId
+     * @param uri
      * @throws IOException
      */
-    public void openPdf(int resourceId) throws IOException {
-        InputStream inputStream = mContext.getResources().openRawResource(resourceId);
+    public void openPdf(Uri uri) throws IOException {
+        InputStream inputStream = mContext.getContentResolver().openInputStream(uri);
+
         byte[] bytes = new byte[inputStream.available()];
 
         int offset = 0;
@@ -173,7 +170,7 @@ public class PdfHandler {
         }
 
         final float scale = mViewSize / mPDFPage.getWidth() * 0.95f;
-        Bitmap bitmap = mPDFPage.getImage((int) (mPDFPage.getWidth() * scale), (int) (mPDFPage.getHeight() * scale), null, true, true);
+        Bitmap bitmap = mPDFPage.getImage((int) (mPDFPage.getWidth() * scale), (int) (mPDFPage.getHeight() * scale), null);
         return bitmap;
 
 //        try {

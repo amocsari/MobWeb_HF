@@ -1,7 +1,9 @@
 package com.example.dragon.pageflipperdemo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +38,9 @@ public class PdfActivity extends Activity{
         mPdfHandler = PdfHandler.get(getBaseContext(), ivContent.getWidth());
 
         try {
-            mPdfHandler.openPdf(R.raw.sample);
+            Intent intent = getIntent();
+            Uri uri = Uri.parse(intent.getExtras().getString("uri"));
+            mPdfHandler.openPdf(uri);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,9 +52,11 @@ public class PdfActivity extends Activity{
                 //TODO: ne get-eljük minden alkalommal amikor megnyomjuk a gombot
                 mPdfHandler = PdfHandler.get(getBaseContext(), ivContent.getWidth());
                 //TODO: impl
-                Integer pageNo = Integer.parseInt(etPageNum.getText().toString());
                 try {
+                    Integer pageNo = Integer.parseInt(etPageNum.getText().toString());
                     mPdfHandler.activatePage(pageNo);
+                }catch (NumberFormatException e){
+                    return;
                 } catch (PdfNotOpenException e) {
                     e.printStackTrace();
                 } catch (PdfPageNotFoundException e) {

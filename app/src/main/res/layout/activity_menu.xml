@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="pageFlipDemo" />
-        <Button
-            android:id="@+id/bPdfOpenDemo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="pdfOpenDemo"/>
+        <!--<Button-->
+            <!--android:id="@+id/bPdfOpenDemo"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="pdfOpenDemo"/>-->
         <Button
             android:id="@+id/bPdfList"
             android:layout_width="match_parent"

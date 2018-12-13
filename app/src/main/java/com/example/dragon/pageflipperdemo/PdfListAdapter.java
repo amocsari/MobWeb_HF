@@ -1,6 +1,8 @@
 package com.example.dragon.pageflipperdemo;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.dragon.pageflipperdemo.Database.Firebase.PdfDataModel;
+import com.example.dragon.pageflipperdemo.Storage.Local.LocalStorageService;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,16 +70,22 @@ public class PdfListAdapter extends RecyclerView.Adapter<PdfListAdapter.PdfViewH
     public PdfViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         final View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.template_pdf_list_item, viewGroup, false);
 
-//        v.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int position = recyclerView.getChildAdapterPosition(view);
-//                PdfDataModel pdfDataModel = dataSet.get(position);
-//                File chosenFile = LocalStorageService.getInstance(context).getPdfById(pdfDataModel.id);
-//
-//                Intent intent = new Intent();
-//            }
-//        });
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = recyclerView.getChildAdapterPosition(view);
+                PdfDataModel pdfDataModel = dataSet.get(position);
+                Uri uri = LocalStorageService.getInstance(context).getPdfById(pdfDataModel.id);
+
+                if(uri == null){
+                    return;
+                }
+
+                Intent intent = new Intent(context, PdfActivity.class);
+                intent.putExtra("uri", uri.toString());
+                context.startActivity(intent);
+            }
+        });
 
         return new PdfViewHolder(v);
     }
